@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+ <div class="row">
+        <div class="col-lg-12 col-sm-12 col-xl-12">
+            <div class="card m-b-30">
+                <div class="card-body table-responsive">
+                    <h4 class="mt-0 header-title">Senarai Tenaga Pengajar</h4>
+                    <a href="{% url 'sijil_tauliah' context.kelas_list.0.cawangan  %}" target="_blank" class="btn btn-danger">CAWANGAN : {{context.kelas_list.0.cawangan}}</a>
+                    <hr>
+                    <select class="select2" id="kelas_list">
+                    {% for x in context.kelas_list %}
+                        <option value="{% url 'download_sijil_tauliah_bykelas' x.cawangan x.kelas %}">{{x.kelas}}</option>
+                    {% endfor %}
+                    </select>
+                    <p></p>
+                    <button id="kelas_btn" class="btn btn-info">Jana by kelas</button>
+                    <hr>
+                    <select class="select2" id="kelas_list_zip">
+                    {% for x in context.kelas_list %}
+                        <option value="{% url 'download_sijil_tauliah_bykelas_zip' x.cawangan x.kelas %}">{{x.kelas}}</option>
+                    {% endfor %}
+                    </select>
+                    <p></p>
+                    <button id="kelas_btn_zip" class="btn btn-info">Jana by kelas (ZIP)</button>
+                    <hr>
+                    <table id="datatable_soalanAudit" class="table table-bordered">
+                        <thead>
+                        <tr class="table-header-center">
+                            <th>CAWANGAN</th>
+                            <th>KELAS</th>
+                            <th>NAMA</th>
+                            <th>NO.KP</th>
+                            <th>STATUS</th>
+                            <th>PENYELIA</th>
+                            <th>JANA SIJIL</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for c in context.tp_list %}
+                        <tr>
+                            <td>{{c.cawangan}}</td>
+                            <td>{{c.kelas}}</td>
+                            <td>{{c.nama}}</td>
+                            <td>{{c.noKP}}</td>
+                            <td>{{c.status}}</td>
+                            <td>{{c.penyelia}}</td>
+                            <td><a href="{% url 'download_sijil_individu' c.id %}" target="_blank" class="btn btn-info">Jana</a></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+{% endblock  %}
+{% block actionScript %}
+<script>
+
+$("#kelas_btn").on("click",function() {
+    window.open($("#kelas_list").val(), '_blank');
+});
+
+$("#kelas_btn_zip").on("click",function() {
+    window.open($("#kelas_list_zip").val(), '_blank');
+});
+
+</script>
+{% endblock %}
